@@ -47,16 +47,15 @@ def greet_user() -> None:
     Greets the user.
     :return: None.
     """
-    print("Welcome! I am the Pancake-Stack-Solver-9000.")
-    print("Please enter the ordering of your initial stack and I will find "
-          "the number of flips needed to return it to the proper ordering.")
-    print("The first number entered will be treated as the bottom of the "
-          "stack. The last number entered as the top of the stack.")
-    print("The larger the number the larger the pancake. 5 is a much larger "
-          "pancake than 1.")
-    print("The integers must start at 1 and cannot skip.")
-    print("For example: 5, 4, 3, 2, 1 -- would be treated as a stack in the "
-          "correct order from the bottom to the top")
+    print("\nWelcome! I am the Pancake-Stack-Solver-9000.\n\n"
+          "Please enter the ordering of your initial stack and I will find\n"
+          "the number of flips needed to return it to the proper ordering.\n\n"
+          "The first number entered will be treated as the bottom of the \n"
+          "stack. The last number entered as the top of the stack.\n\n"
+          "The larger the number the larger the pancake. 5 is a much larger\n"
+          "pancake than 1. \n\nThe integers must start at 1 and cannot skip."
+          "\n\nFor example: 5, 4, 3, 2, 1 -- would be treated as a stack in "
+          "the\ncorrect order from the bottom to the top.\n")
 
 
 def get_input() -> str:
@@ -64,9 +63,9 @@ def get_input() -> str:
     Gets input from the user.
     :return: None
     """
-    return input("Please input your initial stack as a comma separated list "
-                 "of integers that follow the rules above. Anything else "
-                 "will be rejected.\n")
+    return input("Please input your initial stack as a comma separated list\n"
+                 "of integers that follow the rules above. Anything else\n"
+                 "will be rejected.\n\n")
 
 
 if __name__ == "__main__":
