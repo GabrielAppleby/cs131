@@ -1,4 +1,4 @@
-from typing import Sequence, List
+from typing import Sequence, List, Tuple
 
 
 class PancakeStack:
@@ -16,10 +16,10 @@ class PancakeStack:
         must be the top of the stack.
         :param cost_to_parent: The cost associated with the parent.
         """
-        self._data = tuple(data)
-        self._length = len(data)
-        self._cost_to_parent = cost_to_parent
-        self._heuristic_cost = self.__calculate_heuristic_cost()
+        self._data: Tuple = tuple(data)
+        self._length: int = len(data)
+        self._cost_to_parent: int = cost_to_parent
+        self._heuristic_cost: int = self.__calculate_heuristic_cost()
 
     def cost_to_parent(self) -> int:
         """
@@ -51,14 +51,21 @@ class PancakeStack:
         get to in one flip.
         :return: The children of the current state.
         """
-        children = []
-        for i in range(self.__len__()):
+        children: List[PancakeStack] = []
+        for i in range(self.__len__()):  # type: int
             children.append(PancakeStack(self._data[0:i] +
                                          tuple(reversed(
                                              self._data[i:self.__len__()])),
                                          self._cost_to_parent +
                                          self.__actual_cost_between_states()))
         return children
+
+    def get_data(self) -> tuple:
+        """
+        Gets the underlying data of the PancakeStack.
+        :return: The underlying data of the PancakeStack.
+        """
+        return self._data
 
     def __actual_cost_between_states(self) -> int:
         """
@@ -73,8 +80,8 @@ class PancakeStack:
         estimated cost to get to the goal from this state.)
         :return: The estimated cost.
         """
-        cost = 0
-        for pancake, index in enumerate(self._data):
+        cost: int = 0
+        for index, pancake in enumerate(self._data):  # type: int, PancakeStack
             if pancake != (index + 1):
                 cost += 1
         return cost
@@ -111,12 +118,21 @@ class PancakeStack:
         """
         return hash(self.__key())
 
+    def __str__(self) -> str:
+        """
+        Produces a string output of the PancakeStack.
+        :return: The string output of the PancakeStack.
+        """
+        return 'PancakeStack(Stack: {}. Cost to Stack: {})'\
+            .format(self._data, self.cost_to_self())
+
     def __repr__(self) -> str:
         """
         Gets a string representation of the PancakeStack.
         :return: A string representation of the PancakeStack.
         """
-        return 'PancakeStack({})'.format(self._data)
+        return 'PancakeStack({}, {})'.format(self._data,
+                                             self._cost_to_parent)
 
     def __eq__(self, other: 'PancakeStack') -> bool:
         """
