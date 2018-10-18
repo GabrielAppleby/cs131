@@ -2,8 +2,8 @@ from sudoku_board import SudokuBoard
 from sudoku_tile import SudokuTile
 from typing import Set, Optional
 
-# The initial form of the board.
-INITIAL_BOARD = [
+# The easy board.
+EASY_BOARD = [
     [6, 0, 8, 7, 0, 2, 1, 0, 0],
     [4, 0, 0, 0, 1, 0, 0, 0, 2],
     [0, 2, 5, 4, 0, 0, 0, 0, 0],
@@ -13,6 +13,18 @@ INITIAL_BOARD = [
     [0, 0, 0, 0, 0, 6, 7, 5, 0],
     [2, 0, 0, 0, 9, 0, 0, 0, 8],
     [0, 0, 6, 8, 0, 5, 2, 0, 3]]
+
+# The evil board.
+EVIL_BOARD = [
+    [0, 7, 0, 0, 4, 2, 0, 0, 0],
+    [0, 0, 0, 0, 0, 8, 6, 1, 0],
+    [3, 9, 0, 0, 0, 0, 0, 0, 7],
+    [0, 0, 0, 0, 0, 4, 0, 0, 9],
+    [0, 0, 3, 0, 0, 0, 7, 0, 0],
+    [5, 0, 0, 1, 0, 0, 0, 0, 0],
+    [8, 0, 0, 0, 0, 0, 0, 7, 6],
+    [0, 5, 4, 8, 0, 0, 0, 0, 0],
+    [0, 0, 0, 6, 1, 0, 0, 5, 0]]
 
 # Arto Inkala's board
 ARTO_BOARD = [
@@ -38,6 +50,10 @@ UNSOLVABLE_BOARD = [
     [0, 0, 8, 5, 0, 0, 0, 1, 0],
     [0, 9, 0, 0, 0, 0, 4, 0, 0]]
 
+# Keeps track of the number of backtracks the algorithm performs
+number_of_backtracks: int = 0
+# Keeps track of the number of variable assignments the algorithm performs.
+number_of_variable_assignments:int = 0
 
 def greet_user(board: SudokuBoard) -> None:
     """
@@ -64,6 +80,10 @@ def display_answer(board: SudokuBoard) -> None:
     else:
         print("The given board was not solvable. Or I'm getting demoted to "
               "the Sudoku-Solver-8000.")
+    print("\nThe number of times this algorithm backtracked is: " +
+          str(number_of_backtracks) + ".")
+    print("The number of times this algorithm assigned a value to a variable"
+          " is: " + str(number_of_variable_assignments) + ".")
 
 
 def recursive_backtracking(board: SudokuBoard) -> Optional[SudokuBoard]:
@@ -73,6 +93,8 @@ def recursive_backtracking(board: SudokuBoard) -> Optional[SudokuBoard]:
     :param board: The SudokuBoard to solve.
     :return: The solved SudokuBoard is possible, None otherwise.
     """
+    global number_of_backtracks
+    global number_of_variable_assignments
     # If the board is complete, return it.
     if board.complete() is True:
         return board
@@ -87,6 +109,8 @@ def recursive_backtracking(board: SudokuBoard) -> Optional[SudokuBoard]:
         for value in possible_values:  # type: int
             # Attempt to assign a value
             board.assign(tile, value)
+            # Keep track of number of variable assignments for output
+            number_of_variable_assignments += 1
             # Attempt to go through the process for the rest of the tiles
             result = recursive_backtracking(board)
             # If it worked
@@ -98,14 +122,14 @@ def recursive_backtracking(board: SudokuBoard) -> Optional[SudokuBoard]:
             # Now we either try the next value for this tile or if there
             # are no more possible value for this tile we return None and try
             # reassigning the variable before this.
+        # Keep track of number of backtracks for output.
+        number_of_backtracks += 1
         return None
     return None
 
 
 if __name__ == "__main__":
-    my_board: SudokuBoard = SudokuBoard(INITIAL_BOARD)
+    my_board: SudokuBoard = SudokuBoard(EVIL_BOARD)
     greet_user(my_board)
     answer: SudokuBoard = recursive_backtracking(my_board)
     display_answer(answer)
-
-
