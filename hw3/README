@@ -1,0 +1,2 @@
+Runs a genetic algorithm to solve the knapsack problem. This implementation has reproduction, mutation, and culling.
+The population limit, and number of generations can be edited at the top of main.py. Python main.py to run.
